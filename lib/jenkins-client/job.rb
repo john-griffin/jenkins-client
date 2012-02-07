@@ -1,7 +1,7 @@
 module Jenkins
   class Client
     class Job
-      def jobs
+      def self.all
         resp = Jenkins::Client.get "/api/json"
         resp.body.jobs
       end

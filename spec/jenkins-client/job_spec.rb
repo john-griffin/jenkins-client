@@ -11,7 +11,7 @@ describe Jenkins::Client::Job do
     end
   end
 
-  describe "#jobs" do
+  describe ".all" do
     it "will return a list of jobs" do
       body = '{"assignedLabels":[{}],"mode":"NORMAL","nodeDescription":"the master Jenkins node","nodeName":"","numExecutors":2,"description":null,"jobs":[
       {"name":"foo-bar","url":"https://testjenkins.com/job/foo-bar/","color":"blue"},
@@ -22,10 +22,10 @@ describe Jenkins::Client::Job do
       stub_request(:get, "https://testuser:testpass@jenkinstest.com/api/json").
          with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => body, :headers => {})
-      subject.jobs.should include({"name"=>"foo-bar",
+      Jenkins::Client::Job.all.should include({"name"=>"foo-bar",
         "url"=>"https://testjenkins.com/job/foo-bar/",
         "color"=>"blue"})
-      subject.jobs.should have(5).items
+      Jenkins::Client::Job.all.should have(5).items
     end
   end
 end
