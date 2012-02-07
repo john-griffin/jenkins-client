@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = Jenkins::Client::VERSION
 
   gem.add_development_dependency "rspec", "~> 2.8.0"
+  gem.add_development_dependency "rake"
 end
