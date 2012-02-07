@@ -4,20 +4,30 @@ require 'rash'
 
 module Jenkins
   class Client
-    attr_accessor :username, :password, :url
+    class << self
+      attr_accessor :username, :password, :url, :connection
 
-    def connection
-      conn = Faraday.new(:url => url) do |builder|
-        builder.use FaradayMiddleware::Rashify
-        builder.use FaradayMiddleware::ParseJson
-        builder.adapter  :net_http
+      def configure
+        yield self
+        setup_connection
       end
-      conn.basic_auth username, password
-      conn      
+
+      def setup_connection
+        @connection = Faraday.new(:url => url) do |builder|
+          builder.use FaradayMiddleware::Rashify
+          builder.use FaradayMiddleware::ParseJson
+          builder.adapter  :net_http
+        end
+        @connection.basic_auth username, password
+      end
+
+      def get(path)
+        connection.get(path)
+      end
     end
 
     def jobs
-      resp = connection.get "/api/json"
+      resp = Jenkins::Client.get "/api/json"
       resp.body.jobs
     end
   end

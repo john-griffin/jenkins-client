@@ -2,14 +2,15 @@ require "spec_helper"
 require "jenkins-client/client"
 
 describe Jenkins::Client do 
+  before(:each) do
+    Jenkins::Client.configure do |c|
+      c.username = "testuser"
+      c.password = "testpass"
+      c.url = "https://jenkinstest.com"
+    end
+  end
+
   describe "#jobs" do
-    subject {
-      client = Jenkins::Client.new
-      client.username = "testuser"
-      client.password = "testpass"
-      client.url = "https://jenkinstest.com"
-      client
-    }
     it "will return a list of jobs" do
       body = '{"assignedLabels":[{}],"mode":"NORMAL","nodeDescription":"the master Jenkins node","nodeName":"","numExecutors":2,"description":null,"jobs":[
       {"name":"foo-bar","url":"https://testjenkins.com/job/foo-bar/","color":"blue"},
