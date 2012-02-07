@@ -1,7 +1,8 @@
 require "spec_helper"
-require "jenkins-client/client"
+require "jenkins-client"
+require "jenkins-client/job"
 
-describe Jenkins::Client do 
+describe Jenkins::Client::Job do 
   before(:each) do
     Jenkins::Client.configure do |c|
       c.username = "testuser"
