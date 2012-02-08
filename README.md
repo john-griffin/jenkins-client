@@ -1,4 +1,4 @@
-# Jenkins::Client
+# Jenkins::Client [![travis](https://secure.travis-ci.org/john-griffin/jenkins-client.png)](http://travis-ci.org/john-griffin/jenkins-client)
 
 This is a small gem used for listing, finding and creating Jenkins jobs on a Jenkins CI server.
 
