@@ -1,2 +1,2 @@
 require "jenkins-client/version"
-require "jenkins-client/client"
+require "jenkins-client/job"

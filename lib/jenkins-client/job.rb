@@ -1,3 +1,5 @@
+require "jenkins-client/client"
+
 module Jenkins
   class Client
     class Job
