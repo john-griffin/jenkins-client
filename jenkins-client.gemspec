@@ -4,9 +4,9 @@ require File.expand_path('../lib/jenkins-client/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["John Griffin"]
   gem.email         = ["johnog@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = "List, find and create Jenkins jobs on a Jenkins CI server"
+  gem.summary       = "List, find and create Jenkins jobs on a Jenkins CI server"
+  gem.homepage      = "https://github.com/john-griffin/jenkins-client"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
