@@ -5,6 +5,10 @@ module Jenkins
         resp = Jenkins::Client.get "/api/json"
         resp.body.jobs
       end
+
+      def self.find(name)
+        all.select{|j| j.name == name}.first
+      end
     end
   end
 end
