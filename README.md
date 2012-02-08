@@ -1,6 +1,6 @@
 # Jenkins::Client
 
-TODO: Write a gem description
+This is a small gem used for listing, finding and creating Jenkins jobs on a Jenkins CI server.
 
 ## Installation
 
@@ -18,7 +18,51 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In rails add an initialiser like this
+
+``` ruby
+Jenkins::Client.configure do |c|
+  c.username = "user"
+  c.password = "pass"
+  c.url = "http://jenkinsurl.com"
+end
+```
+
+Then you can issue the following commands in your app.
+
+### All
+
+`Jenkins::Client::Job.all` pulls back a list of objects that represent all the Jenkins jobs on the server.
+
+### Find
+
+`Jenkins::Client::Job.find("job_name")` pulls back a single Jenkins job based on the job name.
+
+### Create
+
+`Jenkins::Client::Job.create("job_name", config).should be_true` will create a new Jenkins job on the server based on the config you pass in. Jenkins uses XML config files on the server and this is what you should send as the config. Example
+
+``` xml
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders/>
+  <publishers/>
+  <buildWrappers/>
+</project>
+```
+
+To export an existing config simply look in the jobs path inside your Jenkins server and pull back a job's `config.xml` file.
 
 ## Contributing
 
