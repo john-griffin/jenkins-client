@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rspec", "~> 2.8.0"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "webmock", "~> 1.7.10"
+  gem.add_development_dependency "guard-rspec", "~> 0.6.0"
 end
