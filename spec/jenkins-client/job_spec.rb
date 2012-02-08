@@ -3,20 +3,20 @@ require "jenkins-client"
 require "jenkins-client/job"
 
 describe Jenkins::Client::Job do
-  def stub_empty
+  def jenkins_config(url)
     Jenkins::Client.configure do |c|
       c.username = "testuser"
       c.password = "testpass"
-      c.url = "https://emptyjenkinstest.com"
+      c.url = url
     end
   end
 
+  def empty_jenkins_config
+    jenkins_config("https://emptyjenkinstest.com")
+  end
+
   before(:each) do
-    Jenkins::Client.configure do |c|
-      c.username = "testuser"
-      c.password = "testpass"
-      c.url = "https://jenkinstest.com"
-    end
+    jenkins_config("https://jenkinstest.com")
   end
 
   before(:each) do
@@ -57,7 +57,7 @@ describe Jenkins::Client::Job do
 
     context "given no jobs" do
       before(:each) do
-        stub_empty
+        empty_jenkins_config
       end
 
       it "will have no jobs" do
@@ -82,7 +82,7 @@ describe Jenkins::Client::Job do
 
     context "given no jobs" do
       before(:each) do
-         stub_empty
+         empty_jenkins_config
       end
     
       it "will be nil" do
