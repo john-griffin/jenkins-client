@@ -2,7 +2,15 @@ require "spec_helper"
 require "jenkins-client"
 require "jenkins-client/job"
 
-describe Jenkins::Client::Job do 
+describe Jenkins::Client::Job do
+  def stub_empty
+    Jenkins::Client.configure do |c|
+      c.username = "testuser"
+      c.password = "testpass"
+      c.url = "https://emptyjenkinstest.com"
+    end
+  end
+
   before(:each) do
     Jenkins::Client.configure do |c|
       c.username = "testuser"
@@ -46,6 +54,16 @@ describe Jenkins::Client::Job do
         })
       end
     end
+
+    context "given no jobs" do
+      before(:each) do
+        stub_empty
+      end
+
+      it "will have no jobs" do
+        Jenkins::Client::Job.all.should be_empty
+      end
+    end
   end
 
   describe ".find" do
@@ -64,11 +82,7 @@ describe Jenkins::Client::Job do
 
     context "given no jobs" do
       before(:each) do
-         Jenkins::Client.configure do |c|
-          c.username = "testuser"
-          c.password = "testpass"
-          c.url = "https://emptyjenkinstest.com"
-        end
+         stub_empty
       end
     
       it "will be nil" do
