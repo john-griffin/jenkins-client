@@ -34,10 +34,5 @@ module Jenkins
         resp.status == 200
       end
     end
-
-    def jobs
-      resp = Jenkins::Client.get "/api/json"
-      resp.body.jobs
-    end
   end
 end
