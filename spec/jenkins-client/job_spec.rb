@@ -23,6 +23,13 @@ describe Jenkins::Client::Job do
        to_return(:status => 200, :body => body, :headers => {})        
   end
 
+  before(:each) do
+    body = '{"assignedLabels":[{}],"mode":"NORMAL","nodeDescription":"the master Jenkins node","nodeName":"","numExecutors":2,"description":null,"jobs":[]}'
+    stub_request(:get, "https://testuser:testpass@emptyjenkinstest.com/api/json").
+       with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+       to_return(:status => 200, :body => body, :headers => {})        
+  end
+
   describe ".all" do
     context "given some jobs are available" do
       let(:jobs){Jenkins::Client::Job.all}
@@ -46,6 +53,26 @@ describe Jenkins::Client::Job do
       it "will find the specified job" do
         job = Jenkins::Client::Job.find("woohoo")
         job.url.should eq("https://jenkinstest.com/job/woohoo/")
+      end
+    end
+
+    context "given a match isn't found" do
+      it "will be nil" do
+        Jenkins::Client::Job.find("badname").should be_nil
+      end
+    end
+
+    context "given no jobs" do
+      before(:each) do
+         Jenkins::Client.configure do |c|
+          c.username = "testuser"
+          c.password = "testpass"
+          c.url = "https://emptyjenkinstest.com"
+        end
+      end
+    
+      it "will be nil" do
+        Jenkins::Client::Job.find("woohoo").should be_nil
       end
     end
   end
