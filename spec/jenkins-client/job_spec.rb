@@ -90,4 +90,18 @@ describe Jenkins::Client::Job do
       end
     end
   end
+
+  describe ".create" do
+    before(:each) do
+      stub_request(:post, "https://testuser:testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+         to_return(:status => 200, :body => "", :headers => {})
+    end
+
+    context "given an xml config file" do
+      it "will be able to create a new jenkins job" do
+        config = File.open("spec/fixtures/jenkins_config.xml").read
+        Jenkins::Client::Job.create("excellent", config).should be_true
+      end
+    end
+  end
 end

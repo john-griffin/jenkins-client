@@ -9,6 +9,10 @@ module Jenkins
       def self.find(name)
         all.select{|j| j.name == name}.first
       end
+
+      def self.create(name, config)
+        Jenkins::Client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
+      end
     end
   end
 end

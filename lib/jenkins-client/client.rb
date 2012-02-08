@@ -24,6 +24,15 @@ module Jenkins
       def get(path)
         connection.get(path)
       end
+
+      def post(path, body)
+        resp = @connection.post do |req|
+          req.headers['Content-Type'] = 'application/xml'
+          req.url path
+          req.body = body
+        end
+        resp.status == 200
+      end
     end
 
     def jobs
