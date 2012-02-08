@@ -82,7 +82,7 @@ describe Jenkins::Client::Job do
 
     context "given no jobs" do
       before(:each) do
-         empty_jenkins_config
+        empty_jenkins_config
       end
     
       it "will be nil" do
