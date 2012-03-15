@@ -11,6 +11,7 @@ module Jenkins
         yield self
         setup_connection
       end
+
       @connection
       def setup_connection
         @connection = Faraday.new(:url => url) do |builder|

@@ -103,5 +103,18 @@ describe Jenkins::Client::Job do
         Jenkins::Client::Job.create("excellent", config).should be_true
       end
     end
+
+    context "jenkins is not root app" do
+      before(:each) do
+        jenkins_config("https://jenkinstest.com/jenkins")
+        stub_request(:post, "https://testuser:testpass@jenkinstest.com/jenkins/createItem/api/xml?name=excellent").
+            to_return(:status => 200, :body => "", :headers => {})
+      end
+
+      it "should be able to create a new job" do
+        config = File.read("spec/fixtures/jenkins_config.xml")
+        Jenkins::Client::Job.create("excellent", config).should be_true
+      end
+    end
   end
 end
