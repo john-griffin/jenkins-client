@@ -21,7 +21,7 @@ module Jenkins
       end
 
       def self.start(name)
-        Jenkins::Client.post("#{name}/build", "")
+        Jenkins::Client.post("/job/#{name}/build", "")
       end
     end
   end

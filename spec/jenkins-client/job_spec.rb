@@ -140,7 +140,7 @@ describe Jenkins::Client::Job do
        before(:each) do
          stub_request(:post, "https://testuser.testpass@jenkinstest.com/createItem/api/xml?name=excellent").
              to_return(:status => 200, :body => "", :headers => {})
-         stub_request(:post, "https://testuser:testpass@jenkinstest.com/excellent/build").
+         stub_request(:post, "https://testuser:testpass@jenkinstest.com/job/excellent/build").
              with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/xml', 'User-Agent'=>'Ruby'}).
              to_return(:status => 200, :body => "", :headers => {})
        end
