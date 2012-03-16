@@ -15,6 +15,10 @@ module Jenkins
       def self.create(name, config)
         Jenkins::Client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
       end
+
+      def self.delete(name)
+        Jenkins::Client.post("/job/#{name}/doDelete", "")
+      end
     end
   end
 end
