@@ -19,6 +19,10 @@ module Jenkins
       def self.delete(name)
         Jenkins::Client.post("/job/#{name}/doDelete", "")
       end
+
+      def self.start(name)
+        Jenkins::Client.post("#{name}/build", "")
+      end
     end
   end
 end

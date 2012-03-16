@@ -134,4 +134,21 @@ describe Jenkins::Client::Job do
       end
     end
   end
+
+  describe ".start" do
+    context "there is a job to start" do
+       before(:each) do
+         stub_request(:post, "https://testuser.testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+             to_return(:status => 200, :body => "", :headers => {})
+         stub_request(:post, "https://testuser:testpass@jenkinstest.com/excellent/build").
+             with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/xml', 'User-Agent'=>'Ruby'}).
+             to_return(:status => 200, :body => "", :headers => {})
+       end
+
+      it "should start the build for this job" do
+        Jenkins::Client::Job.start("excellent").should be_true
+      end
+
+    end
+  end
 end
