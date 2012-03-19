@@ -25,7 +25,7 @@ module Jenkins
       end
 
       def self.lastBuild(name)
-        resp_hash = Jenkins::Client::get("/job/#{name}/lastBuild/api/json")
+        Jenkins::Client::get("/job/#{name}/lastBuild/api/json")
       end
     end
   end
