@@ -66,11 +66,11 @@ To export an existing config simply look in the jobs path inside your Jenkins se
 
 ### Start
 
-`Jenkins::Client::Job.start("job_name")` will start a build for the job which name is passed by parameter
+`Jenkins::Client::Job.start("job_name")` will start a build for the job whose name is passed by parameter
 
 ### LastBuild
 
-`Jenkins::Client::Job.lastBuild("job_name")` will give full informations about the last build of the job which name is passed by parameter
+`Jenkins::Client::Job.lastBuild("job_name")` will return information about the last build of the job whose name is passed by parameter
 
 ## Contributing
 
