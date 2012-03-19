@@ -23,6 +23,10 @@ module Jenkins
       def self.start(name)
         Jenkins::Client.post("/job/#{name}/build", "")
       end
+
+      def self.lastBuild(name)
+        resp_hash = Jenkins::Client::get("/job/#{name}/lastBuild/api/json")
+      end
     end
   end
 end

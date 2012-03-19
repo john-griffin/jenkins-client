@@ -151,4 +151,28 @@ describe Jenkins::Client::Job do
 
     end
   end
+
+  describe ".lastBuild" do
+    context "a build has been started" do
+     before(:each) do
+       stub_request(:post, "https://testuser.testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+           to_return(:status => 200, :body => "", :headers => {})
+       stub_request(:post, "https://testuser:testpass@jenkinstest.com/job/excellent/build").
+           to_return(:status => 200, :body => "", :headers => {})
+       stub_request(:get, "https://testuser:testpass@jenkinstest.com/job/excellent/lastBuild/api/json").
+           with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+           to_return(:status => 200, :body => resp_lastbuild, :headers => {})
+     end
+
+      it "should return 1 as buildNumber" do
+        resp = Jenkins::Client::Job.lastBuild("excellent")
+        resp.body.number.should == 1
+      end
+    end
+  end
+
+  def resp_lastbuild
+    current_dir = File.expand_path(File.dirname((__FILE__)))
+    IO.read(File.join(current_dir, "..", "support", "resp_last_build.json"))
+  end
 end
