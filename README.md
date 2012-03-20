@@ -64,6 +64,14 @@ Then you can issue the following commands in your app.
 
 To export an existing config simply look in the jobs path inside your Jenkins server and pull back a job's `config.xml` file.
 
+### Start
+
+`Jenkins::Client::Job.start("job_name")` will start a build for the job whose name is passed by parameter
+
+### LastBuild
+
+`Jenkins::Client::Job.lastBuild("job_name")` will return information about the last build of the job whose name is passed by parameter
+
 ## Contributing
 
 1. Fork it
