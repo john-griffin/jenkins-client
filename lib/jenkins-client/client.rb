@@ -23,7 +23,8 @@ module Jenkins
       end
 
       def get(path)
-        connection.get(path)
+        normalized_path = normalize_path path
+        connection.get(normalized_path)
       end
 
       def post(path, body)
