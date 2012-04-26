@@ -1,0 +1,46 @@
+{
+    "actions": [{
+        "causes": [{
+            "shortDescription": "Started by an SCM change"
+        }]
+    }, {}, {
+        "buildsByBranchName": {
+            "origin/master": {
+                "buildNumber": 1,
+                "buildResult": null,
+                "revision": {
+                    "SHA1": "c0262eb9f342eec9bfbc533968f2fcc66d7e80db",
+                    "branch": [{
+                        "SHA1": "c0262eb9f342eec9bfbc533968f2fcc66d7e80db",
+                        "name": "origin/master"
+                    }]
+                }
+            }
+        },
+        "lastBuiltRevision": {
+            "SHA1": "c0262eb9f342eec9bfbc533968f2fcc66d7e80db",
+            "branch": [{
+                "SHA1": "c0262eb9f342eec9bfbc533968f2fcc66d7e80db",
+                "name": "origin/master"
+            }]
+        },
+        "scmName": ""
+    }, {}, {}],
+    "artifacts": [],
+    "building": false,
+    "description": null,
+    "duration": 495,
+    "fullDisplayName": "excellent #1",
+    "id": "2012-03-19_09-01-38",
+    "keepLog": false,
+    "number": 1,
+    "result": "FAILURE",
+    "timestamp": 1332144098399,
+    "url": "https://testuser:testpass@jenkinstest.com/job/excellent/1/",
+    "builtOn": "",
+    "changeSet": {
+        "items": [],
+        "kind": null
+    },
+    "culprits": []
+}
