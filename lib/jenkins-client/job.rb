@@ -1,32 +1,34 @@
-require "jenkins-client/client"
-
 module Jenkins
   class Client
-    class Job
-      def self.all
-        resp = Jenkins::Client.get "/api/json"
-        resp.body.jobs
+    class Job < Hashie::Rash
+      attr_accessor :client
+      
+      def create!(config)
+        client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
       end
-
-      def self.find(name)
-        all.select{|j| j.name == name}.first
+      
+      def delete!
+        client.post("/job/#{name}/doDelete", "")
       end
-
-      def self.create(name, config)
-        Jenkins::Client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
+  
+      def start!
+        client.post("/job/#{name}/build", "")
       end
-
-      def self.delete(name)
-        Jenkins::Client.post("/job/#{name}/doDelete", "")
+  
+      def last_build(status = "")
+        build = Jenkins::Client::Build.new(client.get("/job/#{name}/last#{status.capitalize}Build/api/json").body)
+        build.job = self
+        build
       end
-
-      def self.start(name)
-        Jenkins::Client.post("/job/#{name}/build", "")
+      
+      def last_failed_build
+        last_build(:failed)
       end
-
-      def self.lastBuild(name)
-        Jenkins::Client::get("/job/#{name}/lastBuild/api/json")
+  
+      def last_successful_build
+        last_build(:successful)
       end
+    
     end
   end
 end

@@ -21,26 +21,28 @@ Or install it yourself as:
 In rails add an initialiser like this
 
 ``` ruby
-Jenkins::Client.configure do |c|
-  c.username = "user"
-  c.password = "pass"
-  c.url = "http://jenkinsurl.com"
-end
+client = Jenkins::Client.new
+client.username = "user"
+client.password = "pass"
+client.url = "http://jenkinsurl.com"
 ```
 
 Then you can issue the following commands in your app.
 
-### All
+### Jobs
 
-`Jenkins::Client::Job.all` pulls back a list of objects that represent all the Jenkins jobs on the server.
+`client.jobs` returns a hash of jobs with the job name as key.
 
-### Find
+#### Create
 
-`Jenkins::Client::Job.find("job_name")` pulls back a single Jenkins job based on the job name.
+Create a new Jenkins job on the server with a given configuration.
 
-### Create
+``` ruby
+job = Jenkins::Client::Job.new({name: "job_name"})
+job.create!(config)
+```
 
-`Jenkins::Client::Job.create("job_name", config).should be_true` will create a new Jenkins job on the server based on the config you pass in. Jenkins uses XML config files on the server and this is what you should send as the config. Example
+Jenkins uses XML config files on the server and this is what you should send as the config. Example:
 
 ``` xml
 <?xml version='1.0' encoding='UTF-8'?>
@@ -64,13 +66,31 @@ Then you can issue the following commands in your app.
 
 To export an existing config simply look in the jobs path inside your Jenkins server and pull back a job's `config.xml` file.
 
-### Start
+#### Start
 
-`Jenkins::Client::Job.start("job_name")` will start a build for the job whose name is passed by parameter
+Starts a job.
 
-### LastBuild
+job = Jenkins::Client::Job.new({name: "job_name"})
+job.start!
 
-`Jenkins::Client::Job.lastBuild("job_name")` will return information about the last build of the job whose name is passed by parameter
+#### Delete
+
+Delete a Jenkins job on the server.
+
+``` ruby
+job = Jenkins::Client::Job.new({name: "job_name"})
+job.delete!
+```
+
+#### Last Build
+
+`job.last_build` will return the last build.
+`job.last_successful_build` will return the last successful build.
+`job.last_failed_build` will return the last failed build.
+
+### Build
+
+`build.console_text` will return the build's console text.
 
 ## Contributing
 
