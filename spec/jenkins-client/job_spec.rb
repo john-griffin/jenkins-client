@@ -27,15 +27,15 @@ describe Jenkins::Client::Job do
     {"name":"fudge","url":"https://jenkinstest.com/job/fudge/","color":"blue"},
     {"name":"amaze","url":"https://jenkinstest.com/job/amaze/","color":"blue"}]}'
     stub_request(:get, "https://testuser:testpass@jenkinstest.com/api/json").
-       with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-       to_return(:status => 200, :body => body, :headers => {})        
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => body, :headers => {})
   end
 
   before(:each) do
     body = '{"assignedLabels":[{}],"mode":"NORMAL","nodeDescription":"the master Jenkins node","nodeName":"","numExecutors":2,"description":null,"jobs":[]}'
     stub_request(:get, "https://testuser:testpass@emptyjenkinstest.com/api/json").
-       with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-       to_return(:status => 200, :body => body, :headers => {})        
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => body, :headers => {})
   end
 
   describe ".all" do
@@ -48,10 +48,10 @@ describe Jenkins::Client::Job do
 
       it "will contain an expected job" do
         jobs.should include({
-          "name"=>"foo-bar", 
-          "url"=>"https://testjenkins.com/job/foo-bar/",
-          "color"=>"blue"
-        })
+                                "name"=>"foo-bar",
+                                "url"=>"https://testjenkins.com/job/foo-bar/",
+                                "color"=>"blue"
+                            })
       end
     end
 
@@ -84,7 +84,7 @@ describe Jenkins::Client::Job do
       before(:each) do
         empty_jenkins_config
       end
-    
+
       it "will be nil" do
         Jenkins::Client::Job.find("woohoo").should be_nil
       end
@@ -94,7 +94,7 @@ describe Jenkins::Client::Job do
   describe ".create" do
     before(:each) do
       stub_request(:post, "https://testuser:testpass@jenkinstest.com/createItem/api/xml?name=excellent").
-         to_return(:status => 200, :body => "", :headers => {})
+          to_return(:status => 200, :body => "", :headers => {})
     end
 
     context "given an xml config file" do
@@ -103,5 +103,76 @@ describe Jenkins::Client::Job do
         Jenkins::Client::Job.create("excellent", config).should be_true
       end
     end
+
+    context "jenkins is not root app" do
+      before(:each) do
+        jenkins_config("https://jenkinstest.com/jenkins")
+        stub_request(:post, "https://testuser:testpass@jenkinstest.com/jenkins/createItem/api/xml?name=excellent").
+            to_return(:status => 200, :body => "", :headers => {})
+      end
+
+      it "should be able to create a new job" do
+        config = File.read("spec/fixtures/jenkins_config.xml")
+        Jenkins::Client::Job.create("excellent", config).should be_true
+      end
+    end
+  end
+
+  describe ".delete" do
+    context "there is a job to delete" do
+      before(:each) do
+        stub_request(:post, "https://testuser:testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+            to_return(:status => 200, :body => "", :headers => {})
+
+        stub_request(:post, "https://testuser:testpass@jenkinstest.com/job/excellent/doDelete").
+            with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/xml', 'User-Agent'=>'Ruby'}).
+            to_return(:status => 200, :body => "", :headers => {})
+      end
+
+      it "should delete the job" do
+        Jenkins::Client::Job.delete("excellent").should be_true
+      end
+    end
+  end
+
+  describe ".start" do
+    context "there is a job to start" do
+       before(:each) do
+         stub_request(:post, "https://testuser.testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+             to_return(:status => 200, :body => "", :headers => {})
+         stub_request(:post, "https://testuser:testpass@jenkinstest.com/job/excellent/build").
+             with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/xml', 'User-Agent'=>'Ruby'}).
+             to_return(:status => 200, :body => "", :headers => {})
+       end
+
+      it "should start the build for this job" do
+        Jenkins::Client::Job.start("excellent").should be_true
+      end
+
+    end
+  end
+
+  describe ".lastBuild" do
+    context "a build has been started" do
+     before(:each) do
+       stub_request(:post, "https://testuser.testpass@jenkinstest.com/createItem/api/xml?name=excellent").
+           to_return(:status => 200, :body => "", :headers => {})
+       stub_request(:post, "https://testuser:testpass@jenkinstest.com/job/excellent/build").
+           to_return(:status => 200, :body => "", :headers => {})
+       stub_request(:get, "https://testuser:testpass@jenkinstest.com/job/excellent/lastBuild/api/json").
+           with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+           to_return(:status => 200, :body => resp_lastbuild, :headers => {})
+     end
+
+      it "should return 1 as buildNumber" do
+        resp = Jenkins::Client::Job.lastBuild("excellent")
+        resp.body.number.should == 1
+      end
+    end
+  end
+
+  def resp_lastbuild
+    current_dir = File.expand_path(File.dirname((__FILE__)))
+    IO.read(File.join(current_dir, "..", "support", "resp_last_build.json"))
   end
 end
