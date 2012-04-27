@@ -1,47 +1,61 @@
-require "faraday"
-require "faraday_middleware"
-require 'rash'
-
 module Jenkins
   class Client
-    class << self
-      attr_accessor :username, :password, :url, :connection
+    attr_accessor :username, :password, :url
 
-      def configure
-        yield self
-        setup_connection
-      end
+    def configure
+      yield self
+    end
 
-      @connection
-      def setup_connection
-        @connection = Faraday.new(:url => url) do |builder|
+    def connection
+      @connection ||= begin
+        c = Faraday.new(:url => url) do |builder|
           builder.use FaradayMiddleware::Rashify
           builder.use FaradayMiddleware::ParseJson
-          builder.adapter  :net_http
+          builder.adapter :net_http
         end
-        @connection.basic_auth username, password
+        c.basic_auth username, password
+        c
       end
-
-      def get(path)
-        normalized_path = normalize_path path
-        connection.get(normalized_path)
-      end
-
-      def post(path, body)
-        normalized_path = normalize_path path
-        resp = @connection.post do |req|
-          req.headers['Content-Type'] = 'application/xml'
-          req.url normalized_path
-          req.body = body
+    end
+    
+    def raw_connection
+      @raw_connection ||= begin
+        c = Faraday.new(:url => url) do |builder|
+          builder.adapter :net_http
         end
-        resp.status == 200
+        c.basic_auth username, password
+        c
       end
+    end
 
-      private
-      def normalize_path path
-        return @connection.path_prefix+path unless @connection.path_prefix == '/'
-        path
+    def get(path, use_connection = connection)
+      normalized_path = normalize_path path
+      use_connection.get(normalized_path)
+    end
+
+    def post(path, body, use_connection = connection)
+      normalized_path = normalize_path path
+      resp = use_connection.post do |req|
+        req.headers['Content-Type'] = 'application/xml'
+        req.url normalized_path
+        req.body = body
       end
+      resp.status == 200
+    end
+    
+    def jobs
+      Hash[get("/api/json").body.jobs.map do |data|
+        job = Jenkins::Client::Job.new(data)
+        job.client = self
+        [ job.name, job ]
+      end]
+    end
+
+    private
+    
+    def normalize_path path
+      return @connection.path_prefix+path unless @connection.path_prefix == '/'
+      path
     end
 
   end
