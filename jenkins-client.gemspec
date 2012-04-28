@@ -19,8 +19,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency "faraday_middleware", "~> 0.8.4"
   gem.add_dependency 'rash', "~> 0.3.2"
 
-  gem.add_development_dependency "rspec", "~> 2.8.0"
+  gem.add_development_dependency "rspec", "~> 2.9.0"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "webmock", "~> 1.8.2"
-  gem.add_development_dependency "guard-rspec", "~> 0.6.0"
+  gem.add_development_dependency "guard-rspec", "~> 0.7.0"
 end
