@@ -92,6 +92,10 @@ job.delete!
 
 `build.console_text` will return the build's console text.
 
+## Changelog/History
+
+Can be found [here](https://github.com/john-griffin/jenkins-client/blob/master/CHANGELOG.md).
+
 ## Contributing
 
 1. Fork it
