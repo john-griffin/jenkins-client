@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Jenkins::Client::VERSION
 
-  gem.add_dependency "faraday", "~> 0.7.6"
+  gem.add_dependency "faraday", "~> 0.8.0"
   gem.add_dependency "faraday_middleware", "~> 0.8.4"
   gem.add_dependency 'rash', "~> 0.3.2"
 
