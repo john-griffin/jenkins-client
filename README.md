@@ -31,18 +31,22 @@ Then you can issue the following commands in your app.
 
 ### Jobs
 
-`client.jobs` returns a hash of jobs with the job name as key.
+Retrieve a hash of jobs with the job name as key.
+
+``` ruby
+client.jobs
+```
 
 #### Create
 
 Create a new Jenkins job on the server with a given configuration.
 
 ``` ruby
-job = Jenkins::Client::Job.new({name: "job_name"})
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.create!(config)
 ```
 
-Jenkins uses XML config files on the server and this is what you should send as the config. Example:
+Jenkins uses XML config files on the server and this is what you should send as the config.
 
 ``` xml
 <?xml version='1.0' encoding='UTF-8'?>
@@ -70,27 +74,37 @@ To export an existing config simply look in the jobs path inside your Jenkins se
 
 Starts a job.
 
-job = Jenkins::Client::Job.new({name: "job_name"})
+``` ruby
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.start!
+```
 
 #### Delete
 
 Delete a Jenkins job on the server.
 
 ``` ruby
-job = Jenkins::Client::Job.new({name: "job_name"})
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.delete!
 ```
 
 #### Last Build
 
-`job.last_build` will return the last build.
-`job.last_successful_build` will return the last successful build.
-`job.last_failed_build` will return the last failed build.
+Retrieve the last build.
+
+``` ruby
+job.last_build # last build
+job.last_successful_build # last successful build
+job.last_failed_build # last failed build
+```
 
 ### Build
 
-`build.console_text` will return the build's console text.
+Retrieve the console text of a build.
+
+``` ruby
+job.last_failed_build.console_text
+```
 
 ## Changelog/History
 
