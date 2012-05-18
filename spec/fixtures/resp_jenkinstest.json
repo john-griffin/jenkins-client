@@ -1,0 +1,17 @@
+{
+  "assignedLabels" : [{}],
+  "mode" : "NORMAL",
+  "nodeDescription" : "the master Jenkins node",
+  "nodeName" : "",
+  "numExecutors" : 2,
+  "description" : null,
+  "jobs":
+  [
+    { "name" : "foo-bar", "url" : "https://testjenkins.com/job/foo-bar/", "color" : "blue"},
+    { "name" : "woohoo", "url" : "https://jenkinstest.com/job/woohoo/", "color" : "red"},
+    { "name" : "wat", "url" : "https://jenkinstest.com/job/wat/", "color" : "red"},
+    { "name" : "fudge", "url" : "https://jenkinstest.com/job/fudge/", "color" : "blue"},
+    { "name" : "amaze", "url" : "https://jenkinstest.com/job/amaze/", "color" : "blue"}
+  ]
+}
+
