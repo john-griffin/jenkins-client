@@ -22,6 +22,10 @@ module Jenkins
         end
 
       protected
+      
+        def jenkins
+          Jenkins::Client::Auth.client
+        end
 
         def self.inherited(klass)
           return if klass == Jenkins::Client::Command::Base

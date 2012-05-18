@@ -98,7 +98,7 @@ module Jenkins
         command = commands[name]
 
         if command
-          puts "Usage: heroku #{command[:banner]}"
+          puts "Usage: jenkins #{command[:banner]}"
 
           if command[:help].strip.length > 0
             puts command[:help].split("\n")[1..-1].join("\n")
@@ -110,12 +110,12 @@ module Jenkins
         end
 
         if commands_for_namespace(name).size > 0
-          puts "Additional commands, type \"heroku help COMMAND\" for more details:"
+          puts "Additional commands, type \"jenkins help COMMAND\" for more details:"
           puts
           help_for_namespace(name)
           puts
         elsif command.nil?
-          error "#{name} is not a heroku command. See 'heroku help'."
+          error "#{name} is not a jenkins command. See 'jenkins help'."
         end
       end
     end
