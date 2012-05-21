@@ -1,6 +1,6 @@
 module Jenkins
   class Client
-    class Job < Hashie::Rash
+    class Job < Base
       
       def create!(config)
         client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
