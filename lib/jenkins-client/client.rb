@@ -25,7 +25,7 @@ module Jenkins
         [ job.name, job ]
       end]
     end
-
+    
     private
     
     def default_connection_options
@@ -35,7 +35,8 @@ module Jenkins
     def connection(options = default_connection_options)
       @connections ||=  {}
       @connections[options.map { |k, v| "#{k}=v" }.join("|")] ||= begin
-        c = Faraday.new(:url => url) do |builder|
+        uri = url[/^http?s:\/\//] ? url : "http://#{url}"
+        c = Faraday.new(:url => uri) do |builder|
           if options[:json]
             builder.use FaradayMiddleware::Rashify
             builder.use FaradayMiddleware::ParseJson

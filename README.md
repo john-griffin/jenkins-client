@@ -1,6 +1,6 @@
 # Jenkins::Client [![travis](https://secure.travis-ci.org/john-griffin/jenkins-client.png)](http://travis-ci.org/john-griffin/jenkins-client) [![Dependency Status](https://gemnasium.com/john-griffin/jenkins-client.png)](https://gemnasium.com/john-griffin/jenkins-client)
 
-This is a small gem used for listing, finding and creating Jenkins jobs on a Jenkins CI server.
+This gem can be used for listing, finding and creating Jenkins jobs on a Jenkins CI server from Ruby or command-line.
 
 ## Installation
 
@@ -16,7 +16,25 @@ Or install it yourself as:
 
     $ gem install jenkins-client
 
-## Usage
+## Command-Line Usage
+
+The jenkins-client library comes with a convenient command-line interface. The following command lists all available Jenkins jobs.
+
+``` bash
+jenkins --url jenkins.example.com:8080 -u jenkins -p password jobs
+```
+
+Run `jenkins --help` for more information.
+
+### JSON
+
+The command-line client will return structured JSON data when specifying `--json`.
+
+``` bash
+jenkins --url jenkins.example.com:8080 -u jenkins -p password --json jobs
+```
+
+## Libary Usage
 
 In rails add an initialiser like this
 
@@ -34,7 +52,9 @@ Then you can issue the following commands in your app.
 Retrieve a hash of jobs with the job name as key.
 
 ``` ruby
-client.jobs
+client.jobs.each_pair do |name, job|
+  puts "#{name}: #{job.color}"
+end
 ```
 
 #### Create
