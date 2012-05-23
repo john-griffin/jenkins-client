@@ -1,5 +1,7 @@
 ## In git
 
+* Added `jenkins`, a command-line interface.
+
 [Full Changelog](https://github.com/john-griffin/jenkins-client/compare/v0.0.1...master)
 
 ## 0.0.1 (February 8, 2012)

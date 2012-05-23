@@ -1,6 +1,6 @@
 # Jenkins::Client [![travis](https://secure.travis-ci.org/john-griffin/jenkins-client.png)](http://travis-ci.org/john-griffin/jenkins-client) [![Dependency Status](https://gemnasium.com/john-griffin/jenkins-client.png)](https://gemnasium.com/john-griffin/jenkins-client)
 
-This is a small gem used for listing, finding and creating Jenkins jobs on a Jenkins CI server.
+This gem can be used for listing, finding and creating Jenkins jobs on a Jenkins CI server from Ruby or command-line.
 
 ## Installation
 

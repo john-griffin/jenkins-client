@@ -3,13 +3,9 @@ module Jenkins
     class Command
       class Jobs < Base
         def execute
-          client.jobs.each_pair do |job_name, job|
-            if @json
-              puts job.to_json
-            else
-              puts job_name
-            end
-          end
+          display client.jobs.map { |job_name, job|
+            @json ? job.to_json : job_name
+          }
         end
       end
     end
