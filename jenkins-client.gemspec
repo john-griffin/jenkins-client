@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/jenkins-client/version', __FILE__)
+require File.expand_path("../lib/jenkins-client/version", __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["John Griffin"]
@@ -17,7 +17,8 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "faraday", "~> 0.8.0"
   gem.add_dependency "faraday_middleware", "~> 0.8.4"
-  gem.add_dependency 'rash', "~> 0.3.2"
+  gem.add_dependency "rash", "~> 0.3.2"
+  gem.add_dependency "clamp", "~> 0.4.0"
 
   gem.add_development_dependency "rspec", "~> 2.9.0"
   gem.add_development_dependency "rake"

@@ -2,6 +2,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'jenkins-client'
+require 'jenkins-client/cli'
 require 'webmock/rspec'
 
 [ "support/*.rb" ].each do |path|
