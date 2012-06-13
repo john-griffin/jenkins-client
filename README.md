@@ -1,6 +1,6 @@
 # Jenkins::Client [![travis](https://secure.travis-ci.org/john-griffin/jenkins-client.png)](http://travis-ci.org/john-griffin/jenkins-client) [![Dependency Status](https://gemnasium.com/john-griffin/jenkins-client.png)](https://gemnasium.com/john-griffin/jenkins-client)
 
-This is a small gem used for listing, finding and creating Jenkins jobs on a Jenkins CI server.
+This gem can be used for listing, finding and creating Jenkins jobs on a Jenkins CI server from Ruby or command-line.
 
 ## Installation
 
@@ -16,7 +16,25 @@ Or install it yourself as:
 
     $ gem install jenkins-client
 
-## Usage
+## Command-Line Usage
+
+The jenkins-client library comes with a convenient command-line interface. The following command lists all available Jenkins jobs.
+
+``` bash
+jenkins --url jenkins.example.com:8080 -u jenkins -p password jobs
+```
+
+Run `jenkins --help` for more information.
+
+### JSON
+
+The command-line client will return structured JSON data when specifying `--json`.
+
+``` bash
+jenkins --url jenkins.example.com:8080 -u jenkins -p password --json jobs
+```
+
+## Libary Usage
 
 In rails add an initialiser like this
 
@@ -31,18 +49,24 @@ Then you can issue the following commands in your app.
 
 ### Jobs
 
-`client.jobs` returns a hash of jobs with the job name as key.
+Retrieve a hash of jobs with the job name as key.
+
+``` ruby
+client.jobs.each_pair do |name, job|
+  puts "#{name}: #{job.color}"
+end
+```
 
 #### Create
 
 Create a new Jenkins job on the server with a given configuration.
 
 ``` ruby
-job = Jenkins::Client::Job.new({name: "job_name"})
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.create!(config)
 ```
 
-Jenkins uses XML config files on the server and this is what you should send as the config. Example:
+Jenkins uses XML config files on the server and this is what you should send as the config.
 
 ``` xml
 <?xml version='1.0' encoding='UTF-8'?>
@@ -70,27 +94,37 @@ To export an existing config simply look in the jobs path inside your Jenkins se
 
 Starts a job.
 
-job = Jenkins::Client::Job.new({name: "job_name"})
+``` ruby
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.start!
+```
 
 #### Delete
 
 Delete a Jenkins job on the server.
 
 ``` ruby
-job = Jenkins::Client::Job.new({name: "job_name"})
+job = Jenkins::Client::Job.new({ :name => "job_name" })
 job.delete!
 ```
 
 #### Last Build
 
-`job.last_build` will return the last build.
-`job.last_successful_build` will return the last successful build.
-`job.last_failed_build` will return the last failed build.
+Retrieve the last build.
+
+``` ruby
+job.last_build # last build
+job.last_successful_build # last successful build
+job.last_failed_build # last failed build
+```
 
 ### Build
 
-`build.console_text` will return the build's console text.
+Retrieve the console text of a build.
+
+``` ruby
+job.last_failed_build.console_text
+```
 
 ## Changelog/History
 

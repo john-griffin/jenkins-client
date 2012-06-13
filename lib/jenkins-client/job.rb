@@ -1,7 +1,6 @@
 module Jenkins
   class Client
-    class Job < Hashie::Rash
-      attr_accessor :client
+    class Job < Base
       
       def create!(config)
         client.post("/createItem/api/xml?name=#{CGI.escape(name)}", config)
@@ -16,9 +15,8 @@ module Jenkins
       end
   
       def last_build(status = "")
-        build = Jenkins::Client::Build.new(client.get("/job/#{name}/last#{status.capitalize}Build/api/json").body)
-        build.job = self
-        build
+        resp = client.get("/job/#{name}/last#{status.capitalize}Build/api/json").body
+        Jenkins::Client::Build.new(resp.merge({ :job => self }))
       end
       
       def last_failed_build
