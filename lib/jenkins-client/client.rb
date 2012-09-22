@@ -34,7 +34,7 @@ module Jenkins
     
     def connection(options = default_connection_options)
       @connections ||=  {}
-      @connections[options.map { |k, v| "#{k}=v" }.join("|")] ||= begin
+      @connections[options.map { |k, v| "#{k}=#{v}" }.join("|")] ||= begin
         uri = url[/^http?s:\/\//] ? url : "http://#{url}"
         c = Faraday.new(:url => uri) do |builder|
           if options[:json]
