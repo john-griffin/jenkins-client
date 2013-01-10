@@ -35,7 +35,7 @@ module Jenkins
     def connection(options = default_connection_options)
       @connections ||=  {}
       @connections[options.map { |k, v| "#{k}=#{v}" }.join("|")] ||= begin
-        uri = url[/^http?s:\/\//] ? url : "http://#{url}"
+        uri = url[/^https?:\/\//] ? url : "http://#{url}"
         c = Faraday.new(:url => uri) do |builder|
           if options[:json]
             builder.use FaradayMiddleware::Rashify
@@ -43,7 +43,7 @@ module Jenkins
           end
           builder.adapter :net_http
         end
-        c.basic_auth username, password
+        c.basic_auth username, password if username and password
         c
       end
     end
